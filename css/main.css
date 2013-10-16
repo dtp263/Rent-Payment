@@ -5,18 +5,60 @@
    ========================================================================== */
 
 
+body {
+    padding-bottom: 20px;
+}
+
+.logoSpan {
+	text-align: center;
+	width: 40%;
+	height: 50px;
+	background-color: green;
+}
+
+.sloganSpan {
+	text-align: center;
+	width:70%;
+	height: 80px;
+	background-color: red;
+}
+
+.call-to-action {
+	width: 400px;
+	text-align: center;
+}
+
+.btn .landlord {
+	margin-left: 30%;
+}
+
+.tenant .btn {
+	margin-right: 30%;
+}
+
+.aboutDecription {
+	text-align: left;
+}
+
+.centered {
+	margin: 0 auto;
+}
+
+.center
+{
+margin-left:auto;
+margin-right:auto;
+}
 
 
+.right
+{
+position:absolute;
+right:0px;
+width:300px;
+background-color:#b0e0e6;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
+.call-to-action {
+	text-align: center;
+}
