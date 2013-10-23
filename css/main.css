@@ -10,6 +10,15 @@ body {
     background-color: #000000;
 }
 
+@font-face {
+	font-family: harlowSolidItalic;
+	src: url('../fonts/HARLOWSI.TTF');
+}
+
+.navbar {
+	background-color: #0d4f88;
+}
+
 .mainContainer {
 	width: 800px;
 	background-color: #FCFCFC;
@@ -18,20 +27,29 @@ body {
 
 .logoSpan {
 	text-align: center;
-	width: 40%;
-	height: 50px;
-	background-color: green;
+}
+
+.logo {
+	font-family: harlowSolidItalic;
+	font-size: 80px;
+	color: #FCFCFC;
+}
+
+.logoBackground {
+	height: 400px;
+	background-image: url('../assets/images/housebg.png');
+	background-size: cover;
+	background-repeat: no-repeat;
+
 }
 
 .sloganSpan {
 	text-align: center;
-	width:70%;
-	height: 80px;
-	background-color: red;
+	 font-family: "Gill Sans MT", Arial, Helvetica, sans-serif;
 }
 
 .call-to-action {
-	text-align: center;
+	margin-top: 50px;
 }
 
 .btn .landlord {
@@ -48,6 +66,10 @@ body {
 	height: 5px;
 }
 
+.storyBoard {
+	padding: 20px;
+}
+
 .footer {
 	background-color: #0e69b7;
 	padding: 5px;
@@ -58,6 +80,10 @@ body {
 	text-align: left;
 	background-color: #0e69b7;
 	padding: 15px;
+	padding-left: 100px;
+	padding-right: 100px;
+	color: #FCFCFC;
+
 }
 
 .centered {
