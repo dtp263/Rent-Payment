@@ -6,8 +6,10 @@
 
 
 body {
-    padding-bottom: 20px;
-    background-color: #000000;
+}
+
+.mainContainer {
+	margin-top: 0px;
 }
 
 @font-face {
@@ -17,12 +19,6 @@ body {
 
 .navbar {
 	background-color: #0d4f88;
-}
-
-.mainContainer {
-	width: 800px;
-	background-color: #FCFCFC;
-
 }
 
 .logoSpan {
@@ -40,7 +36,14 @@ body {
 	background-image: url('../assets/images/housebg.png');
 	background-size: cover;
 	background-repeat: no-repeat;
+	background-position: center;
+	overflow: visible;
+}
 
+.headerSignIn {
+	float: right;
+	margin-top: 10px;
+	display: block;
 }
 
 .sloganSpan {
@@ -50,6 +53,8 @@ body {
 
 .call-to-action {
 	margin-top: 50px;
+	text-align: center;
+
 }
 
 .btn .landlord {
@@ -103,8 +108,4 @@ position:absolute;
 right:0px;
 width:300px;
 background-color:#b0e0e6;
-}
-
-.call-to-action {
-	text-align: center;
 }

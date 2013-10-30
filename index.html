@@ -9,32 +9,19 @@
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/main.css">
 
-    <nav class="navbar navbar-default signInHeader" role="navigation">
-      <ul class="nav pull-right">
-
-          <li class="dropdown">
-            <a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>
-            <div class="dropdown-menu pull-right" style="padding: 15px; padding-bottom: 0px;">
-              <form action="demo_form.asp" accept-charset="ISO-8859-1">
-                First name: <input type="text" name="fname"><br>
-                Last name: <input type="text" name="lname"><br>
-                <input type="submit" value="Submit">
-              </form>
-            </div>
-          </li>
-
-        </ul>
-      </nav>
-
   </head>
   <body>
 
-<div class="mainContainer center">
-
   <div class="logoBackground">
+    <div class="blueBorder"></div>
+
+    <span class="headerSignIn">
+     <a href="registration/signup.php">Sign In <strong class="caret"></strong></a>
+    </span>
     <div class="logoSpan center">
       <h1 class="logo">Roomer</h1>
     </div>
+
 
     <div class="sloganSpan center">
       Living made easy.
@@ -42,83 +29,15 @@
 
     <div class="container call-to-action">
       <div class="row">
-
-            <div class="dropdown col-md-6 col-sm-6 call-to-action"> <!-- Start of Tennant dropdown -->
-              <button type="button" class="dropdown-toggle btn btn-primary btn-lg tenant" href="#" data-toggle="dropdown">Landlord</button>
-              <ul class="dropdown-menu" role="menu">
-                <li>
-                  <div id="register" class="animate form">
-                    <form  action="mysuperscript.php" autocomplete="on"> 
-                        <h1> Sign up </h1> 
-                        <p> 
-                            <label for="usernamesignup" class="uname" data-icon="u">Your username</label>
-                            <input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="mysuperusername690" />
-                        </p>
-                        <p> 
-                            <label for="emailsignup" class="youmail" data-icon="e" > Your email</label>
-                            <input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="mysupermail@mail.com"/> 
-                        </p>
-                        <p> 
-                            <label for="passwordsignup" class="youpasswd" data-icon="p">Your password </label>
-                            <input id="passwordsignup" name="passwordsignup" required="required" type="password" placeholder="eg. X8df!90EO"/>
-                        </p>
-                        <p> 
-                            <label for="passwordsignup_confirm" class="youpasswd" data-icon="p">Please confirm your password </label>
-                            <input id="passwordsignup_confirm" name="passwordsignup_confirm" required="required" type="password" placeholder="eg. X8df!90EO"/>
-                        </p>
-                        <p class="signin button"> 
-                            <input type="submit" value="Sign up"/> 
-                        </p>
-                        <p class="change_link">  
-                            Already a member ?
-                            <a href="#tologin" class="to_register"> Go and log in </a>
-                        </p>
-                    </form>
-                  </div>
-                </li>
-              </ul>
-            </div> <!-- End of Tennant dropdown -->
-
-
-
-            <div class="dropdown col-md-6 col-sm-6 call-to-action" > <!-- Start of Tennant dropdown -->
-              <button type="button" class="dropdown-toggle btn btn-primary btn-lg tenant" href="#" data-toggle="dropdown">Tenants</button>
-              <ul class="dropdown-menu" role="menu">
-                <li>
-                  <div id="register" class="animate form">
-                    <form  action="mysuperscript.php" autocomplete="on"> 
-                        <h1> Sign up </h1> 
-                        <p> 
-                            <label for="usernamesignup" class="uname" data-icon="u">Your username</label>
-                            <input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="mysuperusername690" />
-                        </p>
-                        <p> 
-                            <label for="emailsignup" class="youmail" data-icon="e" > Your email</label>
-                            <input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="mysupermail@mail.com"/> 
-                        </p>
-                        <p> 
-                            <label for="passwordsignup" class="youpasswd" data-icon="p">Your password </label>
-                            <input id="passwordsignup" name="passwordsignup" required="required" type="password" placeholder="eg. X8df!90EO"/>
-                        </p>
-                        <p> 
-                            <label for="passwordsignup_confirm" class="youpasswd" data-icon="p">Please confirm your password </label>
-                            <input id="passwordsignup_confirm" name="passwordsignup_confirm" required="required" type="password" placeholder="eg. X8df!90EO"/>
-                        </p>
-                        <p class="signin button"> 
-                            <input type="submit" value="Sign up"/> 
-                        </p>
-                        <p class="change_link">  
-                            Already a member ?
-                            <a href="#tologin" class="to_register"> Go and log in </a>
-                        </p>
-                    </form>
-                  </div>
-                </li>
-              </ul>
-            </div> <!-- End of Tennant dropdown -->
-          </div>
+        <div class="dropdown col-md-6 col-sm-6 call-to-action"> <!-- Start of Tennant dropdown -->
+          <button type="button" class="btn btn-primary btn-lg landlord" href="registration/signup.php">Landlord</button>
         </div>
-      </div> <!-- End logo background-->
+        <div class="dropdown col-md-6 col-sm-6 call-to-action" > <!-- Start of Tennant dropdown -->
+          <button type="button" class="btn btn-primary btn-lg tenant" href="#" data-toggle="dropdown">Tenants</button>
+        </div> <!-- End of Tennant dropdown -->
+      </div>
+    </div>
+  </div> <!-- End logo background-->
 
 
     <div class="blueBorder"></div>
@@ -165,7 +84,6 @@
       <p>&copy; Rent2Share 2013</p>
     </div>        
 
-</div> <!--End of mainContainer -->
 
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
