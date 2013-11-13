@@ -26,7 +26,7 @@ To use:
     $ virtualenv env
     $ source ./env/bin/activate
     $ pip install -r requirements.txt
-    $ cd auth_template
+    $ cd roomer
     $ ./manage.py syncdb      # You will get errors here - ignore them
     $ ./manage.py migrate
     $ ./manage.py runserver
