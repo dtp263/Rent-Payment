@@ -35,7 +35,8 @@ urlpatterns = patterns('',
     #Core URLs
     url(r'^$', TemplateView.as_view(template_name='core/index.html'), name='index'),
     url(r'^account/$', 'core.views.account', name='account'),
-    url(r'^register/$', 'core.views.register', name='register'),
+    url(r'^registerLandLord/$', 'core.views.registerLandlord', name='registerLandlord'),
+    url(r'^registerTenant/$', 'core.views.registerTenant', name='registerTenant'),
     url(r'^register/done$', 'core.views.register_done', name='register_done'),
     url(r'^login/$', 'core.views.loginView', name='login'),
 

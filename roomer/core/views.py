@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from forms import UserProfileCreationForm
+from forms import *
 
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response, redirect
@@ -57,9 +57,9 @@ def secured(request):
 def account(request):
     return render(request, 'core/profile.html')
 
-def register(request):
+def registerLandlord(request):
     if request.method == 'POST':
-        form = UserProfileCreationForm(request.POST)
+        form = LandlordCreationForm(request.POST)
         if form.is_valid():
             #Save user and authenticate
             form.save()
@@ -77,8 +77,33 @@ def register(request):
             login(request, user)
             return redirect('register_done')
     else:
-        form = UserProfileCreationForm()
+        form = LandlordCreationForm()
     return render(request, "registration/register.html", {'form': form})
+
+def registerTenant(request):
+    if request.method == 'POST':
+        form = TenantCreationForm(request.POST)
+        if form.is_valid():
+            #Save user and authenticate
+            form.save()
+
+            user = authenticate(
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password1'],
+
+            )
+            #Save profile data
+            profile = user.get_profile()
+            profile.zip = form.cleaned_data['zip']
+            profile.save()
+            #Log the user in
+            login(request, user)
+            return redirect('register_done')
+    else:
+        form = TenantCreationForm()
+
+    return render(request, "registration/register.html", {'form': form},)
+
 
 def register_done(request):
     return render(request, "registration/register_done.html")

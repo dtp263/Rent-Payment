@@ -14,6 +14,7 @@
 {% block content %}
 
 {% comment %}
+    
     <h2>{% trans 'Create an Account' %}</h2>
 
     {% if form.errors %}
@@ -36,8 +37,8 @@
 
 {% endcomment %}
 
-
     <h2>{% trans 'Create an Account' %}</h2>
+
 
     {% if form.errors %}
         <div class="alert alert-error"><i class="icon-warning-sign"></i> {% blocktrans count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}</div>

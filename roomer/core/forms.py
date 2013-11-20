@@ -7,3 +7,10 @@ class UserProfileCreationForm(UserCreationForm):
         help_text='Required. Format as XXXXX or XXXXX-XXXX.')
     
 
+class LandlordCreationForm(UserCreationForm):
+	zip = USZipCodeField(required=True, label='Zip Code',
+        help_text='Required. Format as XXXXX or XXXXX-XXXX. LANDLORD') 
+
+class TenantCreationForm(UserCreationForm):
+    zip = USZipCodeField(required=True, label='Zip Code',
+        help_text='Required. Format as XXXXX or XXXXX-XXXX.  TENNANT')
