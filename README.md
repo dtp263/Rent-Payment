@@ -24,6 +24,7 @@ Pip, and Virtualenv must all be installed correctly.)
 
 	$ virtualenv <yourEnvironmentName>
 	$ workon <yourEnvironmentName>
+	$ pip install -r requirements.txt
 	$ cd roomer    # This takes you to the directory with all of the working files
 	$ 
 	$ #These next steps format and sync the db according to the files.
@@ -34,6 +35,8 @@ Pip, and Virtualenv must all be installed correctly.)
 	$ ./manage.py runserver
 	
 After these steps you can go to a browser and type "localhost:8000".
+
+--------------------------------------------------------------------------ss
 
 If you change the models you must migrate the new schema to the db.
 SQLite3 does not make this very easy so:
