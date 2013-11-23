@@ -7,7 +7,7 @@ from django.core.context_processors import csrf
 from django.shortcuts import render_to_response, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import *
 
 
 def logoutView(request):
@@ -59,25 +59,25 @@ def account(request):
 
 def registerLandlord(request):
     if request.method == 'POST':
-        form = LandlordCreationForm(request.POST)
+        form = UserProfileCreationForm(request.POST)
         if form.is_valid():
-            #Save user and authenticate
             form.save()
-
             user = authenticate(
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password1'],
-
-            )
+                )
+            #Save user and authenticate
+            user.save()
             #Save profile data
             profile = user.get_profile()
-            profile.zip = form.cleaned_data['zip']
+            profile.zipcode = form.cleaned_data['zip']
+            profile.islandlord = True
             profile.save()
             #Log the user in
             login(request, user)
-            return redirect('register_done')
+            return redirect('landlordProfile')
     else:
-        form = LandlordCreationForm()
+        form = UserProfileCreationForm()
     return render(request, "registration/register.html", {'form': form})
 
 def registerTenant(request):
@@ -98,12 +98,18 @@ def registerTenant(request):
             profile.save()
             #Log the user in
             login(request, user)
-            return redirect('register_done')
+            return redirect('tenantProfile')
     else:
         form = TenantCreationForm()
 
     return render(request, "registration/register.html", {'form': form},)
 
 
-def register_done(request):
-    return render(request, "registration/register_done.html")
+def landlordProfile(request, username=None):
+    user = request.user
+    profile = user.get_profile()
+    return render(request, "landlord/landlord_profile.html", {'user':user, 'profile':profile})
+
+def tenantProfile(request):
+    return render(request, "tenant/tenant_profile.html")
+

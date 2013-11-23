@@ -4,18 +4,20 @@ from django.db.models.signals import post_save
 
 class addressType(models.Model):
     city = models.TextField()
-    state = models.TextField()
-    zipcode = models.TextField()
+    state = models.CharField(max_length=2)
+    zipcode = models.CharField(max_length=5)
 
 class propertyProfile(models.Model):
     owner = models.OneToOneField(User)
     address = models.ForeignKey(addressType)
-    numberOfBedrooms = models.IntegerField()
-    totalCost = models.IntegerField()
+    numberOfbedrooms = models.IntegerField()
+    totalcost = models.IntegerField()
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     ip_address = models.IPAddressField(default='0.0.0.0')
+    islandlord = models.BooleanField()
+    zipcode = models.CharField(max_length=5)
 
 
     def save(self, *args, **kwargs):
@@ -26,16 +28,34 @@ class UserProfile(models.Model):
             pass
         models.Model.save(self, *args, **kwargs)
 
-class landlordUserProfile(models.Model):
-    user = models.OneToOneField(User)
-    ip_address = models.IPAddressField(default='0.0.0.0')
 
 
-class tenantUserProfile(models.Model):
-    user = models.OneToOneField(User)
-    ip_address = models.IPAddressField(default='0.0.0.0')
-    currentLandlord = models.ForeignKey(landlordUserProfile)
+# class landlordUserProfile(models.Model):
+#     user = models.OneToOneField(User)
+#     ip_address = models.IPAddressField(default='0.0.0.0')
 
+
+#     def save(self, *args, **kwargs):
+#         try:
+#             existing = UserProfile.objects.get(user=self.user)
+#             self.id = existing.id #force update instead of insert
+#         except UserProfile.DoesNotExist:
+#             pass
+#         models.Model.save(self, *args, **kwargs)
+
+# class tenantUserProfile(models.Model):
+#     user = models.OneToOneField(User)
+#     ip_address = models.IPAddressField(default='0.0.0.0')
+#     currentLandlord = models.ForeignKey(landlordUserProfile)
+
+    
+#     def save(self, *args, **kwargs):
+#         try:
+#             existing = UserProfile.objects.get(user=self.user)
+#             self.id = existing.id #force update instead of insert
+#         except UserProfile.DoesNotExist:
+#             pass
+#         models.Model.save(self, *args, **kwargs)
 
 
 
