@@ -7,9 +7,10 @@
 
 	    <span class="headerSignIn">
 	    	{% if user.is_authenticated %}
+	    		<a href="{% url 'account' %}" >Account <strong class="caret"></strong></a>
 	    		<a href="{% url 'django.contrib.auth.views.logout' %}" >Sign Out <strong class="caret"></strong></a>
 	    	{% else %}
-	    		<a href="{% url 'core.views.loginView' %}" >Sign In <strong class="caret"></strong></a>
+	    		<a href="{% url 'loginView' %}" >Sign In <strong class="caret"></strong></a>
 	    	{% endif %}
 	    </span>
 

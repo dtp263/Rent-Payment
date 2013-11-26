@@ -10,11 +10,19 @@ Django project with:
 	+ Bootstrap (v3.0.0)
 	+ south v.7.6
 	
-Requires:
+Requires: (You must have all of these installed.)
 --------------------
 	- Python v2.7.5
-	- Pip
+		+ http://www.python.org/getit/releases/2.7.5/
+		
+	- Pip (2.7? I think...)
+		+ http://www.pip-installer.org/en/latest/installing.html
+
+	- Python Imaging Library
+		+ https://developers.google.com/appengine/docs/python/images/installingPIL
+		+ pip install PIL		
 	- Virtualenv
+		+ https://pypi.python.org/pypi/virtualenv
 	
 To get site running initially:
 ----------------------------------------------------------------------

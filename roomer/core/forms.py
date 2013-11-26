@@ -1,16 +1,19 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.localflavor.us.forms import USZipCodeField
+from django.forms import ModelForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from core.models import propertyProfile, addressType
 
 class UserProfileCreationForm(UserCreationForm):
-    zip = USZipCodeField(required=True, label='Zip Code',
-        help_text='Required. Format as XXXXX or XXXXX-XXXX.')
-    
+    zip = forms.CharField(max_length=5, min_length=5,
+    	help_text='Required. Format as XXXXX or XXXXX-XXXX.')
 
-# class LandlordCreationForm(UserCreationForm):
-# 	zip = USZipCodeField(required=True, label='Zip Code',
-#         help_text='Required. Format as XXXXX or XXXXX-XXXX. LANDLORD')
+class addressTypeForm(forms.ModelForm):
+    class Meta:
+        model = addressType
 
-class TenantCreationForm(UserCreationForm):
-    zip = USZipCodeField(required=True, label='Zip Code',
-        help_text='Required. Format as XXXXX or XXXXX-XXXX.  TENNANT')
+class PropertyProfileForm(ModelForm):
+	class Meta:
+		model = propertyProfile
+
+class PropertyImageUploadForm(forms.Form):
+	propertyImage = forms.ImageField()

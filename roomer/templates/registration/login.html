@@ -21,7 +21,7 @@
 
     <hr>
 
-    <form class="form-horizontal" method="post" action="{% url 'django.contrib.auth.views.login' %}">
+    <form class="form-horizontal" method="post" action="{% url 'core.views.loginView' %}">
         <fieldset>
             {% csrf_token %}
             <div class="control-group{% if form.username.errors %} error{% endif %}">
@@ -42,6 +42,7 @@
                     </div>
                 </div>
             </div>
+            <br>
             <div class="control-group">
                 <div class="controls">
                     <input class="btn btn-large btn-primary" type="submit" value="{% trans 'Log In' %}" />
@@ -53,7 +54,9 @@
         <script type="text/javascript">document.getElementById("{{ form.username.id_for_label }}").focus();</script>
     </form>
 
-    <p>{% trans 'New User?' %} <a href="{% url 'register' %}">{% trans 'Sign up now!' %}</a></p>
-    <p>{% trans 'Forgot password?' %} <a href="{% url 'password_reset' %}">{% trans 'Click here to reset it.' %}</a></p>
+    {% if not form.errors %}
+        <p>{% trans 'New User?' %} <a href="{% url 'registerLandlord' %}">{% trans 'Sign up as a Landlord!' %}</a><br><a href="{% url 'registerTenant' %}">    {% trans 'Sign up as a Landlord!' %}</a></p>
+        <p>{% trans 'Forgot password?' %} <a href="{% url 'password_reset' %}">{% trans 'Click here to reset it.' %}</a></p>
+    {% endif %}
 
 {% endblock %}

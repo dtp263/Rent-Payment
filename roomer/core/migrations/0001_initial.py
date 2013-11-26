@@ -11,7 +11,7 @@ class Migration(SchemaMigration):
         # Adding model 'addressType'
         db.create_table(u'core_addresstype', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('city', self.gf('django.db.models.fields.TextField')()),
+            ('city', self.gf('django.db.models.fields.TextField')(max_length=15)),
             ('state', self.gf('django.db.models.fields.CharField')(max_length=2)),
             ('zipcode', self.gf('django.db.models.fields.CharField')(max_length=5)),
         ))
@@ -21,9 +21,12 @@ class Migration(SchemaMigration):
         db.create_table(u'core_propertyprofile', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('owner', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('address', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.addressType'])),
-            ('numberOfbedrooms', self.gf('django.db.models.fields.IntegerField')()),
-            ('totalcost', self.gf('django.db.models.fields.IntegerField')()),
+            ('numberOfbedrooms', self.gf('django.db.models.fields.IntegerField')(default=1)),
+            ('totalcost', self.gf('django.db.models.fields.IntegerField')(default='n/a')),
+            ('property_image', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.TextField')(default='(No description provided.)')),
         ))
         db.send_create_signal(u'core', ['propertyProfile'])
 
@@ -34,8 +37,17 @@ class Migration(SchemaMigration):
             ('ip_address', self.gf('django.db.models.fields.IPAddressField')(default='0.0.0.0', max_length=15)),
             ('islandlord', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('zipcode', self.gf('django.db.models.fields.CharField')(max_length=5)),
+            ('profile_image', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
         ))
         db.send_create_signal(u'core', ['UserProfile'])
+
+        # Adding M2M table for field properties on 'UserProfile'
+        db.create_table(u'core_userprofile_properties', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('userprofile', models.ForeignKey(orm[u'core.userprofile'], null=False)),
+            ('propertyprofile', models.ForeignKey(orm[u'core.propertyprofile'], null=False))
+        ))
+        db.create_unique(u'core_userprofile_properties', ['userprofile_id', 'propertyprofile_id'])
 
 
     def backwards(self, orm):
@@ -47,6 +59,9 @@ class Migration(SchemaMigration):
 
         # Deleting model 'UserProfile'
         db.delete_table(u'core_userprofile')
+
+        # Removing M2M table for field properties on 'UserProfile'
+        db.delete_table('core_userprofile_properties')
 
 
     models = {
@@ -68,7 +83,7 @@ class Migration(SchemaMigration):
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
+            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Group']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
@@ -76,7 +91,7 @@ class Migration(SchemaMigration):
             'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
+            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Permission']"}),
             'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
         },
         u'contenttypes.contenttype': {
@@ -88,7 +103,7 @@ class Migration(SchemaMigration):
         },
         u'core.addresstype': {
             'Meta': {'object_name': 'addressType'},
-            'city': ('django.db.models.fields.TextField', [], {}),
+            'city': ('django.db.models.fields.TextField', [], {'max_length': '15'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'state': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
             'zipcode': ('django.db.models.fields.CharField', [], {'max_length': '5'})
@@ -96,16 +111,21 @@ class Migration(SchemaMigration):
         u'core.propertyprofile': {
             'Meta': {'object_name': 'propertyProfile'},
             'address': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.addressType']"}),
+            'description': ('django.db.models.fields.TextField', [], {'default': "'(No description provided.)'"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'numberOfbedrooms': ('django.db.models.fields.IntegerField', [], {}),
+            'numberOfbedrooms': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
             'owner': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True'}),
-            'totalcost': ('django.db.models.fields.IntegerField', [], {})
+            'property_image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'totalcost': ('django.db.models.fields.IntegerField', [], {'default': "'n/a'"})
         },
         u'core.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'ip_address': ('django.db.models.fields.IPAddressField', [], {'default': "'0.0.0.0'", 'max_length': '15'}),
             'islandlord': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'profile_image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'properties': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['core.propertyProfile']", 'symmetrical': 'False'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True'}),
             'zipcode': ('django.db.models.fields.CharField', [], {'max_length': '5'})
         }

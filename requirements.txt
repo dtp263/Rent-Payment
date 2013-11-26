@@ -1,4 +1,4 @@
-Django==1.5
+Django==1.6
 South==0.7.6
 virtualenv==1.8.4
 wsgiref==0.1.2
