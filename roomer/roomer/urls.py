@@ -43,8 +43,10 @@ urlpatterns = patterns('',
 
     #Property URLs
     url(r'^uploadPropertyPic/$', 'core.views.uploadPropertyPic', name='upload_property_pic'),
-    url(r'^newProperty/$', 'core.views.newProperty', name='new_property'),
-    url(r'^newProperty/$', 'core.views.propertyProfilePage', name='property_profile_page'),
+    url(r'^newProperty_1/$', 'core.views.newPropertyStepOne', name='new_property_one'),
+    url(r'^newProperty_2/$', 'core.views.newPropertyStepTwo', name='new_property_two'),
+    url(r'^newPropertyForm/$', 'core.views.newProperty', name='new_property'),
+    url(r'^propertyProfile/$', 'core.views.propertyProfilePage', name='property_profile_page'),
     url(r'^$', 'core.views.secured'),
 
 )

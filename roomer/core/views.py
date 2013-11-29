@@ -81,26 +81,34 @@ def uploadPropertyPic(request):
 @login_required
 def newProperty(request):
     if request.method == 'POST':
-        form = PropertyProfileForm(data=request.POST)
-
-        if form.is_valid():
-            form.save()
-            propertyProfile = create_propertyProfile(form.cleaned_data['title'])
-            return propertyProfilePage(request, title=title)
+        propertyForm = PropertyProfileForm(data=request.POST)
+        if propertyForm.is_valid():
+            # propertyProfileObject = propertyProfile.objects.create_propertyProfile(request.user)
+            propertyProfileObject = propertyProfile(owner=request.user)
+            propertyProfileObject.save()
+            propertyProfileObject.totalcost = propertyForm.cleaned_data['totalcost']
+            propertyProfileObject.title = propertyForm.cleaned_data['title']
+            propertyProfileObject.description = propertyForm.cleaned_data['description']
+            propertyProfileObject.numberOfbedrooms = propertyForm.cleaned_data['numberOfbedrooms']
+            propertyProfileObject.state = propertyForm.cleaned_data['state']
+            propertyProfileObject.zipcode = propertyForm.cleaned_data['zipcode']
+            propertyProfileObject.city = propertyForm.cleaned_data['city']
+            propertyProfileObject.save()
+            return render(request, "property/property_page.html", {'propertyProfile':propertyProfileObject})
         else:
-            return render(request, "core/error.html", {'form':form})
+            return render(request, "core/error.html", {'form':propertyForm})
     else:
-        profileForm = PropertyProfileForm()
-        addressForm = addressTypeForm()
-        return render(request, "landlord/add_property.html", {'profileForm':profileForm, 'addressForm':addressForm})
+        propertyForm = PropertyProfileForm()
+        return render(request, "landlord/add_property.html", {'propertyForm':propertyForm})
 
 
-def propertyProfilePage(request, owner=None, title=None):
-    if not title == None:
+def propertyProfilePage(request, propertyProfile=None):
+    if not peopertyProfile == None:   
         propertyProfile = propertyProfile.objects.filter(title=title)
         return render(request, "property/property_page.html", {'propertyProfile':propertyProfile})
     else:
-        return render(request, "core/error.html")
+        return render(request, "property/property_page.html", {'propertyProfile':propertyProfile})
+        # return render(request, "core/error.html")
 
 
 def registerLandlord(request):
