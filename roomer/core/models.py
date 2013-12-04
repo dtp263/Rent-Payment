@@ -19,7 +19,6 @@ class UserProfile(models.Model):
     zipcode = models.CharField(max_length=5)
     profile_image = models.ImageField(upload_to=get_user_image_path, blank=True, null=True)
 
-
     def save(self, *args, **kwargs):
         try:
             existing = UserProfile.objects.get(user=self.user)

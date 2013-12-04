@@ -87,10 +87,23 @@ def upload_property_pic(request, property_id):
             propertyProf = get_object_or_404(propertyProfile, id=property_id)
             propertyProf.property_image = request.FILES['image']
             propertyProf.save()
-            return render_to_response('property/property_page.html', {'propertyProfile':propertyProf})
+            return HttpResponseRedirect('/propertyProfile/%i/' % propertyProf.id)
     else:
         form = PropertyImageUploadForm()
     return render(request, 'landlord/add_property_photo.html', {'form':form})
+
+@login_required
+def upload_profile_pic(request, profile_id):
+    if request.method == 'POST':
+        form = ProfilePhotoUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            userProf = get_object_or_404(UserProfile, id=profile_id)
+            userProf.profile_image = request.FILES['image']
+            userProf.save()
+            return HttpResponseRedirect('/account/')
+    else:
+        form = ProfilePhotoUploadForm()
+    return render(request, 'landlord/add_profile_photo.html', {'form':form})
 
 @login_required
 def newProperty(request):
@@ -107,7 +120,9 @@ def newProperty(request):
             propertyProfileObject.zipcode = propertyForm.cleaned_data['zipcode']
             propertyProfileObject.city = propertyForm.cleaned_data['city']
             propertyProfileObject.save()
-            return account(request)
+            userProfile = request.user.get_profile()
+            properties = propertyProfile.objects.filter(owner=request.user)
+            return HttpResponseRedirect('/account/')
         else:
             return render(request, "core/error.html", {'form':propertyForm})
     else:

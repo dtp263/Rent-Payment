@@ -36,6 +36,10 @@ urlpatterns = patterns('',
     url(r'^$', TemplateView.as_view(template_name='core/index.html'), name='index'),
     url(r'^account/$', 'core.views.account', name='account'),
 
+    url(r'^profile_photo_upload/(?P<profile_id>\d+)/$', 'core.views.upload_profile_pic'),
+
+
+
     #Core registration and login
     url(r'^registerLandlord/$', 'core.views.registerLandlord', name='registerLandlord'),
     url(r'^registerTenant/$', 'core.views.registerTenant', name='registerTenant'),
