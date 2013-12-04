@@ -8,15 +8,6 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'addressType'
-        db.create_table('core_addresstype', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('city', self.gf('django.db.models.fields.CharField')(max_length=15)),
-            ('state', self.gf('django.db.models.fields.CharField')(max_length=2)),
-            ('zipcode', self.gf('django.db.models.fields.CharField')(max_length=5)),
-        ))
-        db.send_create_signal('core', ['addressType'])
-
         # Adding model 'UserProfile'
         db.create_table('core_userprofile', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -45,9 +36,6 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
-        # Deleting model 'addressType'
-        db.delete_table('core_addresstype')
-
         # Deleting model 'UserProfile'
         db.delete_table('core_userprofile')
 
@@ -91,13 +79,6 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
-        'core.addresstype': {
-            'Meta': {'object_name': 'addressType'},
-            'city': ('django.db.models.fields.CharField', [], {'max_length': '15'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'state': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
-            'zipcode': ('django.db.models.fields.CharField', [], {'max_length': '5'})
         },
         'core.propertyprofile': {
             'Meta': {'object_name': 'propertyProfile'},

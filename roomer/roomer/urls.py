@@ -42,11 +42,9 @@ urlpatterns = patterns('',
     url(r'^signup/', 'core.views.sign_up_in'),
 
     #Property URLs
-    url(r'^uploadPropertyPic/$', 'core.views.uploadPropertyPic', name='upload_property_pic'),
-    url(r'^newProperty_1/$', 'core.views.newPropertyStepOne', name='new_property_one'),
-    url(r'^newProperty_2/$', 'core.views.newPropertyStepTwo', name='new_property_two'),
     url(r'^newPropertyForm/$', 'core.views.newProperty', name='new_property'),
-    url(r'^propertyProfile/$', 'core.views.propertyProfilePage', name='property_profile_page'),
+    url(r'^propertyProfile/(?P<property_id>\d+)/$', 'core.views.property_profile', name="property_profile_url"),
+    url(r'^property_photo_upload/(?P<property_id>\d+)/$', 'core.views.upload_property_pic'),
     url(r'^$', 'core.views.secured'),
 
 )

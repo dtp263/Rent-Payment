@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.db.models.signals import post_save
+from django.shortcuts import render
 from PIL import Image
 import os
 
@@ -35,7 +37,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 class propertyProfileManager(models.Manager):
     def create_propertyProfile(self, user):
-        property = self.create(owner=user)
+        propertyProfile = self.create(owner=user)
         return propertyProfile
 
     def get_by_naural_key(self, title):
@@ -55,6 +57,16 @@ class propertyProfile(models.Model):
     totalcost = models.IntegerField(default=0)
     property_image = models.ImageField(upload_to=get_property_image_path, blank=True, null=True)
     description = models.TextField(default="(No description provided.)")
+
+    def __unicode__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('core.views.property_profile', args=[str(self.id)])
+
+    @classmethod
+    def upload_photo(self):
+        return reverse('core.views.upload_property_pic', args=[str(self.id)])
 
 #Connect to the post_save signal and fire create_user_profile when a new User is created.
 post_save.connect(create_user_profile, sender=User)

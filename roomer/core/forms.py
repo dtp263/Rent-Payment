@@ -13,4 +13,6 @@ class PropertyProfileForm(ModelForm):
 		exclude = ['propertyImage', 'owner']
 
 class PropertyImageUploadForm(forms.Form):
-	propertyImage = forms.ImageField()
+	class Meta:
+		model = propertyProfile
+		exclude = ['owner', 'title', 'city', 'zipcode', 'numberOfbedrooms', 'totalcost', 'description']
