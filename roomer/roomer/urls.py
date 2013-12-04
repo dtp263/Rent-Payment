@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.auth.views import login
+from django.conf import settings
 
 
 # Uncomment the next two lines to enable the admin:
@@ -48,5 +49,5 @@ urlpatterns = patterns('',
     url(r'^$', 'core.views.secured'),
 
 )
-
+urlpatterns += patterns('', url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT,}),)
 urlpatterns += staticfiles_urlpatterns()

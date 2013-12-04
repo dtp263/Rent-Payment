@@ -7,10 +7,10 @@ from PIL import Image
 import os
 
 def get_property_image_path(instance, filename):
-    return os.path.join('photos/property_photos', str(instance.id), filename)
+    return os.path.join('static/photos/property_photos', str(instance.id), filename)
 
 def get_user_image_path(instance, filename):
-    return os.path.join('photos/user_photos', str(instance.id), filename)
+    return os.path.join('static/photos/user_photos', str(instance.id), filename)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
