@@ -8,17 +8,6 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'UserProfile'
-        db.create_table('core_userprofile', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
-            ('ip_address', self.gf('django.db.models.fields.IPAddressField')(default='0.0.0.0', max_length=15)),
-            ('islandlord', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('zipcode', self.gf('django.db.models.fields.CharField')(max_length=5)),
-            ('profile_image', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
-        ))
-        db.send_create_signal('core', ['UserProfile'])
-
         # Adding model 'propertyProfile'
         db.create_table('core_propertyprofile', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -31,16 +20,33 @@ class Migration(SchemaMigration):
             ('totalcost', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('property_image', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
             ('description', self.gf('django.db.models.fields.TextField')(default='(No description provided.)')),
+            ('active', self.gf('django.db.models.fields.BooleanField')(default=True)),
         ))
         db.send_create_signal('core', ['propertyProfile'])
 
+        # Adding model 'UserProfile'
+        db.create_table('core_userprofile', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
+            ('ip_address', self.gf('django.db.models.fields.IPAddressField')(default='0.0.0.0', max_length=15)),
+            ('first_name', self.gf('django.db.models.fields.CharField')(max_length=25)),
+            ('last_name', self.gf('django.db.models.fields.CharField')(max_length=25)),
+            ('hometown', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('is_landlord', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('zipcode', self.gf('django.db.models.fields.CharField')(max_length=5)),
+            ('profile_image', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
+            ('living_in', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.propertyProfile'], null=True)),
+            ('active', self.gf('django.db.models.fields.BooleanField')(default=True)),
+        ))
+        db.send_create_signal('core', ['UserProfile'])
+
 
     def backwards(self, orm):
-        # Deleting model 'UserProfile'
-        db.delete_table('core_userprofile')
-
         # Deleting model 'propertyProfile'
         db.delete_table('core_propertyprofile')
+
+        # Deleting model 'UserProfile'
+        db.delete_table('core_userprofile')
 
 
     models = {
@@ -82,6 +88,7 @@ class Migration(SchemaMigration):
         },
         'core.propertyprofile': {
             'Meta': {'object_name': 'propertyProfile'},
+            'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'city': ('django.db.models.fields.CharField', [], {'max_length': '25'}),
             'description': ('django.db.models.fields.TextField', [], {'default': "'(No description provided.)'"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -95,9 +102,14 @@ class Migration(SchemaMigration):
         },
         'core.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
+            'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '25'}),
+            'hometown': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'ip_address': ('django.db.models.fields.IPAddressField', [], {'default': "'0.0.0.0'", 'max_length': '15'}),
-            'islandlord': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'is_landlord': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '25'}),
+            'living_in': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['core.propertyProfile']", 'null': 'True'}),
             'profile_image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['auth.User']", 'unique': 'True'}),
             'zipcode': ('django.db.models.fields.CharField', [], {'max_length': '5'})

@@ -38,7 +38,7 @@ urlpatterns = patterns('',
 
     url(r'^profile_photo_upload/(?P<profile_id>\d+)/$', 'core.views.upload_profile_pic'),
 
-
+    url(r'^property_addition/(?P<property_id>\d+)/$', 'core.views.add_tenant_to_property', name='add_tenant_to_property'),
 
     #Core registration and login
     url(r'^registerLandlord/$', 'core.views.registerLandlord', name='registerLandlord'),
@@ -46,11 +46,16 @@ urlpatterns = patterns('',
     url(r'^login/$', 'core.views.loginView', name='loginView'),
     url(r'^signup/', 'core.views.sign_up_in'),
 
+    url(r'^edit_account_settings/$', 'core.views.editAccountSettings', name="edit_user_settings"),
+
     #Property URLs
     url(r'^newPropertyForm/$', 'core.views.newProperty', name='new_property'),
-    url(r'^propertyProfile/(?P<property_id>\d+)/$', 'core.views.property_profile', name="property_profile_url"),
+    url(r'^propertyProfile/(?P<property_id>\d+)/$', 'core.views.property_profile', name='property_profile_url'),
     url(r'^property_photo_upload/(?P<property_id>\d+)/$', 'core.views.upload_property_pic'),
     url(r'^$', 'core.views.secured'),
+
+    url(r'^all_properties/$', 'core.views.viewAllProperties', name='all_properties'),
+
 
 )
 urlpatterns += patterns('', url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT,}),)

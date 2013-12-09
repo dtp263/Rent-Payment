@@ -68,13 +68,26 @@ def secured(request):
 def account(request):
     user = request.user
     userProfile = user.get_profile()
-    if userProfile.islandlord == True:
+    if userProfile.is_landlord == True:
         properties = propertyProfile.objects.filter(owner=user)
         return render(request, "landlord/landlord_profile.html", {'user':user, 'profile':userProfile, 'properties':properties})
-    elif userProfile.islandlord == False:
-        return render(request, "tenant/tenant_profile.html", {'user':user, 'profile':userProfile})
+    elif userProfile.is_landlord == False:
+        home = userProfile.living_in
+        return render(request, "tenant/tenant_profile.html", {'user':user, 'profile':userProfile, 'home':home})
     else:
-        return render(request, "core/error.html", {'form':propertyForm})
+        return render(request, "core/error.html")
+
+@login_required
+def editAccountSettings(request):
+    if request.method == 'POST':
+        form = AccountSettingsForm(request.POST, instance=request.user.get_profile())
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/account/')
+    else:
+        form = AccountSettingsForm(instance=request.user.get_profile())
+    return render(request, "user/edit_user_settings.html", {'form':form})
+
 
 
 
@@ -90,7 +103,7 @@ def upload_property_pic(request, property_id):
             return HttpResponseRedirect('/propertyProfile/%i/' % propertyProf.id)
     else:
         form = PropertyImageUploadForm()
-    return render(request, 'landlord/add_property_photo.html', {'form':form})
+    return render(request, 'property/add_property_photo.html', {'form':form})
 
 @login_required
 def upload_profile_pic(request, profile_id):
@@ -103,14 +116,13 @@ def upload_profile_pic(request, profile_id):
             return HttpResponseRedirect('/account/')
     else:
         form = ProfilePhotoUploadForm()
-    return render(request, 'landlord/add_profile_photo.html', {'form':form})
+    return render(request, 'user/add_profile_photo.html', {'form':form})
 
 @login_required
 def newProperty(request):
     if request.method == 'POST':
         propertyForm = PropertyProfileForm(data=request.POST)
         if propertyForm.is_valid():
-            # propertyProfileObject = propertyProfile.objects.create_propertyProfile(request.user)
             propertyProfileObject = propertyProfile(owner=request.user)
             propertyProfileObject.totalcost = propertyForm.cleaned_data['totalcost']
             propertyProfileObject.title = propertyForm.cleaned_data['title']
@@ -122,18 +134,41 @@ def newProperty(request):
             propertyProfileObject.save()
             userProfile = request.user.get_profile()
             properties = propertyProfile.objects.filter(owner=request.user)
-            return HttpResponseRedirect('/account/')
+            return HttpResponseRedirect('/propertyProfile/%i/' % propertyProfileObject.id)
         else:
             return render(request, "core/error.html", {'form':propertyForm})
     else:
         propertyForm = PropertyProfileForm()
         return render(request, "landlord/add_property.html", {'propertyForm':propertyForm})
 
+@login_required
+def add_tenant_to_property(request, property_id):
+    tenant_profile = request.user.get_profile()
+    target_property = get_object_or_404(propertyProfile, id=property_id)
+    tenant_profile.living_in = target_property
+    tenant_profile.save()
+    owner = target_property.owner.get_profile()
+    return render(request, "tenant/successful_property.html", {'user_profile':tenant_profile, 'property_profile':target_property, 'owner':owner})
 
-# def property_profilePage(request, propertyProfile_id):
-#     propertyProfile = propertyProfile.objects.filter(id=propertyProfile_id)
-#     # return render_to_response(request, "core/error.html", {'form':propertyForm})
-#     return render_to_response(request, "property/property_page.html", {'propertyProfile':propertyProfile})
+def search_properties(request):
+    if request.method == 'POST':
+        form = PropertySearchform(request.POST)
+        if form.is_valid():
+            properties = propertyProfile.objects.filter(active=True)
+            if form.cleaned_data['title']:
+                properties = properties.filter(title=form.cleaned_data['title'])
+            if form.cleaned_data['city']:
+                properties = properties.filter(city=form.cleaned_data['city'])
+            if form.cleaned_data['state']:
+                properties = properties.filter(state=form.cleaned_data['state'])
+            if form.cleaned_data['zipcode']:
+                properties = properties.filter(zipcode=form.cleaned_data['zipcode'])
+            return render(request, "property/search_results.html", {'properties':properties})
+        else:
+            return render(request, "property/search_properties.html", {'form':form})
+    else:
+        form = PropertySearchform()
+        return render(request, "property/search_properties.html", {'form':form})
 
 def registerLandlord(request):
     if request.method == 'POST':
@@ -149,7 +184,7 @@ def registerLandlord(request):
             #Save profile data
             profile = user.get_profile()
             profile.zipcode = form.cleaned_data['zip']
-            profile.islandlord = True
+            profile.is_landlord = True
             profile.save()
             #Log the user in
             login(request, user)
@@ -181,3 +216,10 @@ def registerTenant(request):
         form = UserProfileCreationForm()
 
     return render(request, "registration/register.html", {'form': form},)
+
+
+def viewAllProperties(request):
+    properties = propertyProfile.objects.filter(active=True)
+    return render(request, "property/all_properties.html", {'properties':properties})
+
+

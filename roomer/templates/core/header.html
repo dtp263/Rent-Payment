@@ -5,7 +5,11 @@
 
 {% block content %}
 
-	    <span class="headerSignIn">
+	<div class="header">
+		<span class="pull-left" id="logo_index_link">
+			<a class="logo logoLink" href="{% url 'index' %}">Roomer</a>
+		</span>
+	    <span class="headerSignIn pull-right">
 	    	{% if user.is_authenticated %}
 	    		<a href="{% url 'account' %}" >Account <strong class="caret"></strong></a>
 	    		<a href="{% url 'django.contrib.auth.views.logout' %}" >Sign Out <strong class="caret"></strong></a>
@@ -13,5 +17,7 @@
 	    		<a href="{% url 'loginView' %}" >Sign In <strong class="caret"></strong></a>
 	    	{% endif %}
 	    </span>
+		<div class="blueBorder"></div>
+	</div>
 
 {% endblock %}
