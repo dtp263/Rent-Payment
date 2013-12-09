@@ -79,6 +79,10 @@ margin-right:auto;
 	margin-bottom: 0px;
 }
 
+.listItemTitleAndAddress {
+	margin-left: 15px;
+
+}
 
 .logoSpan {
 	text-align: center;
@@ -118,6 +122,12 @@ margin-right:auto;
 .propertyListItem {
 	width: 80%;
 	height: auto;
+	background-color: #E6E6FF;
+	padding: 15px;
+}
+
+.propertyListItemPhoto {
+
 }
 
 .property_info_section {
@@ -127,6 +137,9 @@ margin-right:auto;
 .propertyProfileImage {
 	width: 200px;
 	height: 200px;
+	border-style: solid;
+	border-width: 5px;
+	border-color: #0d4f88;
 }
 
 .sloganSpan {

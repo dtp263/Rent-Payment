@@ -42,7 +42,10 @@ def create_user(username, email, password):
 
 def property_profile(request, property_id):
     propertyProf = get_object_or_404(propertyProfile, id=property_id)
-    return render(request, 'property/property_page.html', {'propertyProfile':propertyProf})
+    userProf = request.user.get_profile()
+    owner = get_object_or_404(UserProfile, user=propertyProf.owner)
+    tenants = UserProfile.objects.all().filter(living_in=propertyProf)
+    return render(request, 'property/property_page.html', {'propertyProfile':propertyProf, 'userProf':userProf, 'owner':owner, 'tenants':tenants})
 
 
 def user_exists(username):
@@ -58,11 +61,9 @@ def sign_up_in(request):
     else:
         return redirect("/login/")
 
-
 @login_required(login_url='/login/')
 def secured(request):
     return render_to_response("secure.html")
-
 
 @login_required
 def account(request):
@@ -87,10 +88,6 @@ def editAccountSettings(request):
     else:
         form = AccountSettingsForm(instance=request.user.get_profile())
     return render(request, "user/edit_user_settings.html", {'form':form})
-
-
-
-
 
 @login_required
 def upload_property_pic(request, property_id):
@@ -132,7 +129,6 @@ def newProperty(request):
             propertyProfileObject.zipcode = propertyForm.cleaned_data['zipcode']
             propertyProfileObject.city = propertyForm.cleaned_data['city']
             propertyProfileObject.save()
-            userProfile = request.user.get_profile()
             properties = propertyProfile.objects.filter(owner=request.user)
             return HttpResponseRedirect('/propertyProfile/%i/' % propertyProfileObject.id)
         else:
