@@ -8,10 +8,10 @@ from PIL import Image
 import os
 
 def get_property_image_path(instance, filename):
-    return os.path.join('static/photos/property_photos', str(instance.id), filename)
+    return os.path.join('property_photos', str(instance.id), filename)
 
 def get_user_image_path(instance, filename):
-    return os.path.join('static/photos/user_photos', str(instance.id), filename)
+    return os.path.join('user_photos', str(instance.id), filename)
 
 class propertyProfileManager(models.Manager):
     def create_propertyProfile(self, user):
@@ -21,17 +21,26 @@ class propertyProfileManager(models.Manager):
     def get_by_naural_key(self, title):
         return self.get(title=title)
 
+    @classmethod
+    def edit_property_info(self):
+        return reverse('core.views.edit_property_info', args=[str(self.id)])
+
 class propertyProfile(models.Model):
     # used for natural key handling
     objects = propertyProfileManager()
     
     owner = models.ForeignKey(User)
     title = models.CharField(max_length=100)
-    # address = models.ForeignKey(addressType)
+    street_no = models.CharField(max_length=100)
+    street = models.CharField(max_length=40)
     city = models.CharField(max_length=25)
     state = models.CharField(max_length=25)
     zipcode = models.CharField(max_length=5)
     numberOfbedrooms = models.IntegerField(default=1)
+    num_of_bathrooms = models.IntegerField(default=0)
+    parking = models.IntegerField(default=0)
+    cats_allowed = models.BooleanField(default=False)
+    dogs_allowed = models.BooleanField(default=False)
     totalcost = models.IntegerField(default=0)
     property_image = models.ImageField(upload_to=get_property_image_path, blank=True, null=True)
     description = models.TextField(default="(No description provided.)")
@@ -48,7 +57,7 @@ class propertyProfile(models.Model):
         return reverse('core.views.upload_property_pic', args=[str(self.id)])
 
     @classmethod
-    def add_tenant(request):
+    def add_tenant(self):
         return reverse('core.views.add_tenant_to_property', args=[str(self.id)])
 
 
@@ -63,6 +72,12 @@ class UserProfile(models.Model):
     profile_image = models.ImageField(upload_to=get_user_image_path, blank=True, null=True)
     living_in = models.ForeignKey(propertyProfile, null=True)
     active = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('core.views.user_profile', args=[str(self.id)])
 
     def save(self, *args, **kwargs):
         try:

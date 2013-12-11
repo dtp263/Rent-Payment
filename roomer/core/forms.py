@@ -10,17 +10,21 @@ class UserProfileCreationForm(UserCreationForm):
 class PropertyProfileForm(ModelForm):
 	class Meta:
 		model = propertyProfile
-		exclude = ['propertyImage', 'owner', 'active']
+		exclude =  ['propertyImage', 'owner', 'active', 'street_no', 
+					'street', 'num_of_bathrooms', 'parking', 
+					'cats_allowed', 'dogs_allowed']
 
 class PropertyImageUploadForm(forms.Form):
 	class Meta:
 		model = propertyProfile
-		exclude = ['owner', 'title', 'city', 'zipcode', 'numberOfbedrooms', 'totalcost', 'description', 'active']
+		exclude =  ['owner', 'title', 'city', 'zipcode', 'numberOfbedrooms',
+					'totalcost', 'description', 'active']
 
 class ProfilePhotoUploadForm(forms.Form):
 	class Meta:
 		model = UserProfile
-		exclude = ['user', 'ip_address', 'is_landlord', 'zipcode', 'first_name', 'last_name', 'hometown', 'living_in', 'active']
+		exclude =  ['user', 'ip_address', 'is_landlord', 'zipcode',
+					'first_name', 'last_name', 'hometown', 'living_in', 'active']
 
 class PropertyByTypeSearchForm(forms.Form):
 	title = forms.CharField(required=False)
@@ -29,7 +33,8 @@ class PropertyByTypeSearchForm(forms.Form):
 	zipcode = forms.CharField(required=False)
 	class Meta:
 		model = propertyProfile
-		exclude = ['owner', 'totalcost', 'active', 'property_image', 'description', 'numberOfbedrooms']
+		exclude =  ['owner', 'totalcost', 'active', 'property_image', 'description',
+					'numberOfbedrooms']
 
 class AccountSettingsForm(ModelForm):
 	first_name = forms.CharField(required=False)
@@ -38,4 +43,10 @@ class AccountSettingsForm(ModelForm):
 	zipcode = forms.CharField(required=False)
 	class Meta:
 		model = UserProfile
-		exclude = ['user', 'is_landlord', 'profile_image', 'ip_address', 'living_in', 'active']
+		exclude =  ['user', 'is_landlord', 'profile_image', 'ip_address', 'living_in',
+					'active']
+
+class PropertySettingsForm(ModelForm):
+	class Meta:
+		model = propertyProfile
+		exclude = ['property_image', 'owner', 'active']

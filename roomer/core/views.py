@@ -45,7 +45,7 @@ def property_profile(request, property_id):
     userProf = request.user.get_profile()
     owner = get_object_or_404(UserProfile, user=propertyProf.owner)
     tenants = UserProfile.objects.all().filter(living_in=propertyProf)
-    return render(request, 'property/property_page.html', {'propertyProfile':propertyProf, 'userProf':userProf, 'owner':owner, 'tenants':tenants})
+    return render(request, 'property/property_page.html', {'target_property':propertyProf, 'userProf':userProf, 'owner':owner, 'tenants':tenants})
 
 
 def user_exists(username):
@@ -77,6 +77,17 @@ def account(request):
         return render(request, "tenant/tenant_profile.html", {'user':user, 'profile':userProfile, 'home':home})
     else:
         return render(request, "core/error.html")
+
+def user_profile(request, user_id):
+    user = request.user
+    target_user = get_object_or_404(UserProfile, id=user_id)
+    if target_user.is_landlord:
+        properties = propertyProfile.objects.filter(owner=target_user.user)
+        return render(request, "landlord/landlord_profile.html", {'user':user, 'profile':target_user, 'properties':properties})
+    else:
+        home = target_user.living_in
+        return render(request, "tenant/tenant_profile.html", {'user':user, 'profile':target_user, 'home':home})
+
 
 @login_required
 def editAccountSettings(request):
@@ -138,12 +149,26 @@ def newProperty(request):
         return render(request, "landlord/add_property.html", {'propertyForm':propertyForm})
 
 @login_required
+def edit_property_info(request, property_id):
+    target_property = get_object_or_404(propertyProfile, id=property_id)
+    if request.method == 'POST':
+        property_info_form = PropertySettingsForm(data=request.POST, instance=target_property)
+        if property_info_form.is_valid():
+            property_info_form.save()
+            return HttpResponseRedirect('/propertyProfile/%i/' % target_property.id)
+        else:
+            return render(request, "core/error.html", {'form':propertyForm, 'target_property':target_property})
+    else:
+        property_info_form = PropertySettingsForm(instance=target_property)
+        return render(request, "property/property_settings.html", {'form':property_info_form, 'target_property':target_property})
+
+@login_required
 def add_tenant_to_property(request, property_id):
     tenant_profile = request.user.get_profile()
     target_property = get_object_or_404(propertyProfile, id=property_id)
     tenant_profile.living_in = target_property
     tenant_profile.save()
-    owner = target_property.owner.get_profile()
+    owner = get_object_or_404(UserProfile, user=target_property.owner)
     return render(request, "tenant/successful_property.html", {'user_profile':tenant_profile, 'property_profile':target_property, 'owner':owner})
 
 def search_properties(request):
@@ -200,10 +225,10 @@ def registerTenant(request):
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password1'],
             )
+            user.save()
             #Save profile data
             profile = user.get_profile()
             profile.zipcode = form.cleaned_data['zip']
-            profile.ip_address = request.META['REMOTE_ADDR']
             profile.save()
             #Log the user in
             login(request, user)
